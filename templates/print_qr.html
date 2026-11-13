@@ -18,7 +18,7 @@
 <body>
     <div class="qr-container">
         <h2>Smart Tag - QR Code</h2>
-        <img src="/static/qrcodes/{{ user_id }}.png" alt="QR Code">
+        <img src="{{ url_for('static', filename='qrcodes/' + user_id + '.png') }}" alt="QR Code">
         <p>User ID: <strong>{{ user_id }}</strong></p>
         <button class="print-btn" onclick="window.print()">طباعة الآن 🖨️</button>
     </div>
