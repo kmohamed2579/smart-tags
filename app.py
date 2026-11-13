@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 import qrcode
 import os
 import uuid
@@ -39,8 +39,14 @@ def onboarding():
     
 @app.route('/print_qr/<user_id>')
 def print_qr(user_id):
-    # التأكد من مسار الصورة وتوليدها لو مش موجودة
-    return render_template('print_qr.html', user_id=user_id)
+    # بنحدد المسار المظبوط للصورة
+    image_path = os.path.join('static', 'qrcodes', f"{user_id}.png")
+    
+    # بنتأكد إن الصورة موجودة فعلاً قبل ما نعرضها
+    if os.path.exists(image_path):
+        return send_file(image_path, mimetype='image/png')
+    else:
+        return "عذراً، صورة الـ QR Code غير موجودة لهذا المستخدم."
 
 @app.route('/generate_qr', methods=['POST'])
 def generate_qr():
