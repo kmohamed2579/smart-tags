@@ -36,6 +36,11 @@ def home():
 @app.route('/onboarding.html')
 def onboarding():
     return render_template('onboarding.html')
+    
+@app.route('/print_qr/<user_id>')
+def print_qr(user_id):
+    # التأكد من مسار الصورة وتوليدها لو مش موجودة
+    return render_template('print_qr.html', user_id=user_id)
 
 @app.route('/generate_qr', methods=['POST'])
 def generate_qr():
