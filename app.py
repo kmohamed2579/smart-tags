@@ -2,12 +2,12 @@ from flask import Flask, render_template, request
 import qrcode
 import os
 import uuid
-import sqlite3 # المكتبة الخاصة بقاعدة البيانات
+import sqlite3
 
 app = Flask(__name__)
 os.makedirs('static/qrcodes', exist_ok=True)
 
-# 1. دالة لإنشاء قاعدة البيانات والجدول (بتشتغل أول ما السيرفر يقوم)
+# دالة لإنشاء قاعدة البيانات والجدول (بتشتغل أول ما السيرفر يقوم)
 def init_db():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
