@@ -36,17 +36,6 @@ def home():
 @app.route('/onboarding.html')
 def onboarding():
     return render_template('onboarding.html')
-    
-@app.route('/print_qr/<user_id>')
-def print_qr(user_id):
-    # بنحدد المسار المظبوط للصورة
-    image_path = os.path.join('static', 'qrcodes', f"{user_id}.png")
-    
-    # بنتأكد إن الصورة موجودة فعلاً قبل ما نعرضها
-    if os.path.exists(image_path):
-        return send_file(image_path, mimetype='image/png')
-    else:
-        return "عذراً، صورة الـ QR Code غير موجودة لهذا المستخدم."
 
 @app.route('/generate_qr', methods=['POST'])
 def generate_qr():
