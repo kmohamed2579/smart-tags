@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Smart Tags</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .admin-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .orders-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            direction: ltr;
+        }
+        .order-card {
+            background-color: #1a1a2e;
+            border: 2px solid #3a3a5c;
+            border-radius: 15px;
+            padding: 20px;
+            width: 340px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: left;
+        }
+        .order-card h3 {
+            color: #00f3ff;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #3a3a5c;
+            padding-bottom: 10px;
+        }
+        .order-info p {
+            color: #d1d1e0;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+        .order-info span {
+            color: #ff2a75;
+            font-weight: bold;
+        }
+        .admin-actions {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .magic-wa-btn {
+            background: linear-gradient(45deg, #11998e, #38ef7d);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+        .download-qr-btn {
+            background: #252542;
+            color: #00f3ff;
+            border: 1px solid #00f3ff;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <div style="width: 100%; padding: 20px;">
+        <div class="admin-header">
+            <h1>Welcome Back, Kenzy 👩‍💻</h1>
+            <p>This is your private control room. All new customer orders will appear here.</p>
+        </div>
+
+        <div class="orders-grid">
+            {% for order in orders %}
+            <div class="order-card">
+                <h3>Order #{{ order[0] }}</h3>
+                <div class="order-info">
+                    <p><span>Name:</span> {{ order[2] }}</p>
+                    <p><span>Phone:</span> {{ order[3] }}</p>
+                    <p><span>WhatsApp:</span> {{ order[4] }}</p>
+                </div>
+                
+                <div class="admin-actions">
+                    <!-- WhatsApp Confirmation Button (English & Arabic) -->
+                    <a href="https://wa.me/{{ order[4] }}?text=Hello {{ order[2] }}! Thank you for ordering a Smart Tag. Your order has been successfully received 🎉. Please send your shipping address details, and your order will arrive within 5 business days.%0A%0Aأهلاً يا {{ order[2] }}! شكراً لطلبك Smart Tag، تم استلام الأوردر بنجاح 🎉. يرجى إرسال عنوان الشحن بالتفصيل، الأوردر هيوصلك في خلال 5 أيام عمل إن شاء الله." target="_blank" class="magic-wa-btn">
+                        Confirm Order via WA 💬
+                    </a>
+                    
+                    <!-- View QR Code Button -->
+                    <a href="/static/qrcodes/{{ order[1] }}.png" target="_blank" class="download-qr-btn">
+                        View QR for Printing 🖨️
+                    </a>
+                </div>
+            </div>
+            {% else %}
+            <p style="text-align: center; color: #ff2a75; font-size: 1.1rem;">No orders yet. Share your website link to start receiving requests!</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

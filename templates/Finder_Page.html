@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>تم العثور على مفقودات</title>
+</head>
+<body>
+    <div class="finder-container">
+        <h1>أنا ضعت من صاحبي 😥</h1>
+        <p>شكراً إنك عملت سكان! أرجوك ساعدني أرجع لصاحبي <strong>{{ owner_name }}</strong>.</p>
+        
+        <!-- البايثون هيسأل: هل العميل مختار يخفي رقمه؟ -->
+        {% if hide_number %}
+            
+            <!-- لو الإجابة "آه"، هنعرض فورم للمكتشف يكتب رسالته -->
+            <div class="secure-message-box">
+                <p>صاحب الحاجة فضل يخفي رقمه، بس تقدر تبعتله رسالة وهتوصله فوراً على الواتساب بتاعه!</p>
+                <form action="/send_whatsapp_alert" method="POST">
+                    <!-- حقل مخفي فيه الـ ID بتاع صاحب الحاجة عشان السيستم يعرف هيبعت لمين -->
+                    <input type="hidden" name="owner_id" value="{{ owner_id }}">
+                    
+                    <label>رقم تليفونك (عشان يكلمك):</label>
+                    <input type="tel" name="finder_phone" required>
+                    
+                    <label>رسالتك (مثال: أنا لقيت الشنطة في كافيه كذا):</label>
+                    <textarea name="finder_message" required></textarea>
+                    
+                    <button type="submit">إرسال الرسالة لصاحب الحاجة</button>
+                </form>
+            </div>
+
+        {% else %}
+            
+            <!-- لو الإجابة "لأ" (الرقم مش مخفي)، هنعرض الزراير المباشرة -->
+            <div class="actions">
+                <a href="tel:{{ owner_phone }}" class="btn call-btn">📞 اتصل بيا فوراً</a>
+                <a href="https://wa.me/{{ owner_whatsapp }}?text=السلام عليكم، أنا لقيت حاجتك" class="btn whatsapp-btn">💬 كلمني واتساب</a>
+            </div>
+
+        {% endif %}
+    </div>
+
+    <!-- كود تحديد المكان هيتم استدعاؤه هنا -->
+    <!-- نافذة طلب الموقع المخصصة -->
+    <div id="locationModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h3>📍 مساعدة سريعة</h3>
+            <p>عشان نساعدك ترجع الحاجة لصاحبها أسرع، تسمح لنا نبعت موقعك الحالي لصاحبها؟ (الموقع بيتبعت له هو بس للأمان).</p>
+            <div class="modal-buttons">
+                <button id="allowLocationBtn" class="btn allow-btn">موافق، ابعت الموقع</button>
+                <button id="denyLocationBtn" class="btn deny-btn">لا، شكراً</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- بنربط ملف الجافا سكريبت -->
+    <script src="/static/location_ping.js"></script>
+    
+    <!-- لو العميل كان مختار تفعيل اللوكيشن في الفورم، هننادي على الدالة -->
+    {% if enable_location %}
+    <script>
+        sendLocation("{{ owner_id }}");
+    </script>
+    {% endif %}
+</body>
+</html>
